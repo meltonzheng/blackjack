@@ -3,6 +3,7 @@
 
 #include <QGraphicsItem>
 #include <QPixmap>
+#include <QObject>
 
 const constexpr float FRAMES_PER_SECOND = 30;
 
@@ -13,6 +14,12 @@ private:
     QPixmap* pic;
     int x = 70;
     int y = 100;
+    void check();
+    bool isMoving;
+
+    QPointF velocity;
+
+    QPointF destination;
 
 public:
     Card();
@@ -25,7 +32,7 @@ public:
 
     void set(int new_x, int new_y);
 
-    QPointF velocity;
+    bool moving();
 
 };
 

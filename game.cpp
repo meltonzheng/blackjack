@@ -3,7 +3,7 @@
 #include <QVBoxLayout>
 #include <QRandomGenerator>
 #include <QObject>
-
+#include <QGraphicsView>
 #include <iostream>
 
 /*QObject::connect(start,
@@ -53,11 +53,14 @@ Game::Game(int nplayers)
     scene->addRect(rect2);
     scene->addRect(rect3);
     scene->addRect(rect4);
+
+    QRectF rect1_test = QRectF(170+73, 7, 1,1);
+    scene->addRect(rect1_test);
     view->setScene(scene);
     view->setRenderHint(QPainter::Antialiasing, true);
     QVBoxLayout* layout = new QVBoxLayout();
     layout->addWidget(view);
-    draw = new QPushButton("Draw");
+    draw = new QPushButton("First Draw");
     layout->addWidget(draw,0,Qt::AlignHCenter);
     setLayout(layout);
     refresh();
@@ -65,17 +68,10 @@ Game::Game(int nplayers)
     QObject::connect(draw,
                      &QPushButton::clicked,
                      this,
-                     &Game::doDraw);
+                     &Game::doFirstDraw);
 
-    QObject::connect(this,
-                     &Game::cardDrawn,
-                     this,
-                     &Game::animate1);
 
-    QObject::connect(&timer,
-                     &QTimer::timeout,
-                     scene,
-                     &QGraphicsScene::advance);
+
 
 }
 void Game::makeDeck()
@@ -134,23 +130,23 @@ void Game::refresh()
 //        scene->addPixmap(x);
 //    }
 }
-void Game::doDraw()
+void Game::doFirstDraw()
 {
+
+
     if( num_of_cards + 1 <= card_images.size() )
     {
         int index = rand() % num_of_cards + 1;
 
         num_of_cards--;
 
+        QPolygon test = view->mapFromScene(rect1);
+
         scene->addPixmap(card_images.at(index));
 
         card_images.erase(card_images.begin() + index);
 
-        emit cardDrawn(1);
-
     }
+
 }
-void Game::animate1()
-{
-    timer.start(1000/30);
-}
+

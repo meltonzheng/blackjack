@@ -9,6 +9,10 @@ Card::Card()
 {
     pic = new QPixmap(":/images/back.jpg");
     velocity = 80 * QPointF(cos(0.749),-1*sin(0.749));
+    destination = QPointF();
+
+
+
 }
 QRectF Card::boundingRect() const
 {//0,0 is current position, which is upper left corner
@@ -27,12 +31,17 @@ void Card::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 void Card::advance(int phase)
 {
     //check if it's in the right spot
+
+    QList<QGraphicsItem*> items = collidingItems();
+
     if(phase == 0)
     {
-        QPointF final_location = QPointF(170,7);
-        if(velocity == final_location)
+        if(!items.isEmpty())
         {
-            velocity = QPointF(0,0);
+            velocity.setX(0);
+            velocity.setY(0);
+            isMoving = false;
+            return;
         }
     }
 
@@ -41,6 +50,7 @@ void Card::advance(int phase)
     if(phase == 1)
     {
         setPos(mapToScene(velocity/30));
+        isMoving = true;
     }
 }
 
@@ -48,4 +58,9 @@ void Card::set(int new_x, int new_y)
 {
     x = new_x;
     y = new_y;
+}
+
+bool Card::moving()
+{
+    return isMoving;
 }

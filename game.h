@@ -28,11 +28,10 @@ public:
 public slots:
     void setNumberOfPlayers(int players);
     void startGame();
-    void animate1();
 
 signals:
     void gameStarted();
-    void cardDrawn(int delay);
+    void cardDrawn();
 
 
 private:
@@ -53,7 +52,7 @@ private:
 
     void makeDeck();
     void refresh();
-    void doDraw();
+    void doFirstDraw();
 
     QPushButton* draw;
 
@@ -62,6 +61,8 @@ private:
     QGraphicsView* view;
     QTimer timer;
     int num_of_players;
+
+
 };
 
 #endif // GAME_H
